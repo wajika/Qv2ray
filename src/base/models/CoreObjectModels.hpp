@@ -1,4 +1,5 @@
 #pragma once
+#include "libs/QJsonStruct/QJsonIO.hpp"
 #include "libs/QJsonStruct/QJsonStruct.hpp"
 
 #include <QList>
@@ -7,6 +8,41 @@
 
 namespace Qv2ray::base::objects
 {
+    struct DNSObject
+    {
+        struct DNSServerObject
+        {
+            bool QV2RAY_DNS_IS_COMPLEX_DNS;
+            QString address;
+            int port;
+            QList<QString> domains;
+            QList<QString> expectIPs;
+            DNSServerObject() : QV2RAY_DNS_IS_COMPLEX_DNS(false), port(53){};
+            DNSServerObject(const QString &_address) : DNSServerObject()
+            {
+                address = _address;
+            };
+
+            friend bool operator==(const DNSServerObject &left, const DNSServerObject &right)
+            {
+                return left.QV2RAY_DNS_IS_COMPLEX_DNS == right.QV2RAY_DNS_IS_COMPLEX_DNS && //
+                       left.address == right.address &&                                     //
+                       left.port == right.port &&                                           //
+                       left.domains == right.domains &&                                     //
+                       left.expectIPs == right.expectIPs;
+            }
+            JSONSTRUCT_REGISTER(DNSServerObject, F(QV2RAY_DNS_IS_COMPLEX_DNS, address, port, domains, expectIPs))
+        };
+        QMap<QString, QString> hosts;
+        QList<DNSServerObject> servers;
+        QString clientIp;
+        QString tag;
+        friend bool operator==(const DNSObject &left, const DNSObject &right)
+        {
+            return left.hosts == right.hosts && left.servers == right.servers && left.clientIp == right.clientIp && left.tag == right.tag;
+        }
+        JSONSTRUCT_REGISTER(DNSObject, F(hosts, servers, clientIp, tag))
+    };
     //
     // Used in config generation
     struct AccountObject
@@ -154,9 +190,11 @@ namespace Qv2ray::base::objects
             bool congestion = false;
             int readBufferSize = 1;
             int writeBufferSize = 1;
+            QString seed;
             HeaderObject header;
             KCPObject() : header(){};
-            JSONSTRUCT_REGISTER(KCPObject, F(mtu, tti, uplinkCapacity, downlinkCapacity, congestion, readBufferSize, writeBufferSize, header))
+            JSONSTRUCT_REGISTER(KCPObject,
+                                F(mtu, tti, uplinkCapacity, downlinkCapacity, congestion, readBufferSize, writeBufferSize, header, seed))
         };
         //
         //
@@ -223,11 +261,14 @@ namespace Qv2ray::base::objects
             QString serverName;
             bool allowInsecure;
             bool allowInsecureCiphers;
+            bool disableSessionResumption;
             QList<QString> alpn;
             QList<CertificateObject> certificates;
             bool disableSystemRoot;
-            TLSObject() : serverName(), allowInsecure(), allowInsecureCiphers(), certificates(), disableSystemRoot(){};
-            JSONSTRUCT_REGISTER(TLSObject, F(serverName, allowInsecure, allowInsecureCiphers, alpn, certificates, disableSystemRoot))
+            TLSObject()
+                : serverName(), allowInsecure(), allowInsecureCiphers(), disableSessionResumption(true), certificates(), disableSystemRoot(){};
+            JSONSTRUCT_REGISTER(TLSObject, F(serverName, allowInsecure, allowInsecureCiphers, disableSessionResumption, alpn, certificates,
+                                             disableSystemRoot))
         };
     } // namespace transfer
     //
@@ -315,6 +356,24 @@ namespace Qv2ray::base::objects
             JSONSTRUCT_REGISTER(SocksServerObject, F(address, port, users))
         };
         //
+        // Http, OutBound
+        struct HttpServerObject
+        {
+            struct UserObject
+            {
+                QString user;
+                QString pass;
+                int level;
+                UserObject() : user(), pass(), level(0){};
+                JSONSTRUCT_REGISTER(UserObject, F(user, pass, level))
+            };
+            QString address;
+            int port;
+            QList<UserObject> users;
+            HttpServerObject() : address("0.0.0.0"), port(0), users(){};
+            JSONSTRUCT_REGISTER(HttpServerObject, F(address, port, users))
+        };
+        //
         // VMess Server
         struct VMessServerObject
         {
@@ -324,8 +383,9 @@ namespace Qv2ray::base::objects
                 int alterId;
                 QString security;
                 int level;
-                UserObject() : id(""), alterId(64), security("auto"), level(0){};
-                JSONSTRUCT_REGISTER(UserObject, F(id, alterId, security, level))
+                QString testsEnabled;
+                UserObject() : id(), alterId(64), security("auto"), level(0), testsEnabled("none"){};
+                JSONSTRUCT_REGISTER(UserObject, F(id, alterId, security, level, testsEnabled))
             };
 
             QString address;
@@ -346,7 +406,7 @@ namespace Qv2ray::base::objects
             int level;
             int port;
             ShadowSocksServerObject()
-                : email("user@domain.com"), address("0.0.0.0"), method("aes-256-cfb"), password(""), ota(false), level(0), port(0){};
+                : email(""), address("0.0.0.0"), method("aes-256-cfb"), password(""), ota(false), level(0), port(0){};
             JSONSTRUCT_REGISTER(ShadowSocksServerObject, F(email, address, port, method, password, ota, level))
         };
     } // namespace protocol

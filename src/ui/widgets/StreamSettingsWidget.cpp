@@ -13,12 +13,10 @@ QvMessageBusSlotImpl(StreamSettingsWidget)
 {
     switch (msg)
     {
+        MBRetranslateDefaultImpl;
         case UPDATE_COLORSCHEME:
         case HIDE_WINDOWS:
-        case SHOW_WINDOWS:
-            break;
-            //
-            MBRetranslateDefaultImpl
+        case SHOW_WINDOWS: break;
     }
 }
 
@@ -37,6 +35,7 @@ void StreamSettingsWidget::SetStreamObject(const StreamSettingsObject &sso)
     serverNameTxt->setText(stream.tlsSettings.serverName);
     allowInsecureCB->setChecked(stream.tlsSettings.allowInsecure);
     allowInsecureCiphersCB->setChecked(stream.tlsSettings.allowInsecureCiphers);
+    disableSessionResumptionCB->setChecked(stream.tlsSettings.disableSessionResumption);
     alpnTxt->setPlainText(stream.tlsSettings.alpn.join(NEWLINE));
     // TCP
     tcpHeaderTypeCB->setCurrentText(stream.tcpSettings.header.type);
@@ -63,6 +62,7 @@ void StreamSettingsWidget::SetStreamObject(const StreamSettingsObject &sso)
     kcpUploadCapacSB->setValue(stream.kcpSettings.uplinkCapacity);
     kcpDownCapacitySB->setValue(stream.kcpSettings.downlinkCapacity);
     kcpWriteBufferSB->setValue(stream.kcpSettings.writeBufferSize);
+    kcpSeedTxt->setText(stream.kcpSettings.seed);
     // DS
     dsPathTxt->setText(stream.dsSettings.path);
     // QUIC
@@ -289,4 +289,14 @@ void StreamSettingsWidget::on_alpnTxt_textChanged()
 void StreamSettingsWidget::on_allowInsecureCiphersCB_stateChanged(int arg1)
 {
     stream.tlsSettings.allowInsecureCiphers = arg1 == Qt::Checked;
+}
+
+void StreamSettingsWidget::on_disableSessionResumptionCB_stateChanged(int arg1)
+{
+    stream.tlsSettings.disableSessionResumption = arg1 == Qt::Checked;
+}
+
+void StreamSettingsWidget::on_kcpSeedTxt_textEdited(const QString &arg1)
+{
+    stream.kcpSettings.seed = arg1;
 }
