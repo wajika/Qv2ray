@@ -1,35 +1,34 @@
 #pragma once
 
-/**
- * ICMPPinger - An Implementation of ICMPPing on Windows Platform
- * Required Windows Version: 2000 / XP / 7 / Vista+
- * License: WTFPL
- */
 #include <QtGlobal>
 #ifdef Q_OS_WIN
 
-    #include <QPair>
-    #include <QString>
+    #include "../DNSBase.hpp"
+
     #include <memory>
-    #include <optional>
-    #include <utility>
 
 namespace Qv2ray::components::latency::icmping
 {
-    class ICMPPing
+    class ICMPPing : public DNSBase<ICMPPing>
     {
       public:
-        ICMPPing(uint64_t timeout = DEFAULT_TIMEOUT);
+        using DNSBase<ICMPPing>::DNSBase;
         ~ICMPPing();
 
       public:
         static const uint64_t DEFAULT_TIMEOUT = 10000U;
+        void start();
+        bool notifyTestHost(LatencyTestHost *testHost, const ConnectionId &id);
 
-      public:
-        QPair<long, QString> ping(const QString &ipAddr);
+      private:
+        void ping() override;
+
+      private:
+        void pingImpl();
 
       private:
         uint64_t timeout = DEFAULT_TIMEOUT;
+        std::shared_ptr<uvw::TimerHandle> waitHandleTimer;
     };
 } // namespace Qv2ray::components::latency::icmping
 #endif

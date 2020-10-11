@@ -375,6 +375,7 @@ namespace Qv2ray::base::objects
         };
         //
         // VMess Server
+        constexpr auto VMESS_USER_ALTERID_DEFAULT = 0;
         struct VMessServerObject
         {
             struct UserObject
@@ -384,7 +385,7 @@ namespace Qv2ray::base::objects
                 QString security;
                 int level;
                 QString testsEnabled;
-                UserObject() : id(), alterId(64), security("auto"), level(0), testsEnabled("none"){};
+                UserObject() : id(), alterId(VMESS_USER_ALTERID_DEFAULT), security("auto"), level(0), testsEnabled("none"){};
                 JSONSTRUCT_REGISTER(UserObject, F(id, alterId, security, level, testsEnabled))
             };
 
@@ -393,6 +394,24 @@ namespace Qv2ray::base::objects
             QList<UserObject> users;
             VMessServerObject() : address(""), port(0), users(){};
             JSONSTRUCT_REGISTER(VMessServerObject, F(address, port, users))
+        };
+        //
+        // VLess Server
+        struct VLessServerObject
+        {
+            struct UserObject
+            {
+                QString id;
+                QString encryption;
+                UserObject() : id(), encryption("none"){};
+                JSONSTRUCT_REGISTER(UserObject, F(id, encryption))
+            };
+
+            QString address;
+            int port;
+            QList<UserObject> users;
+            VLessServerObject() : address(""), port(0), users(){};
+            JSONSTRUCT_REGISTER(VLessServerObject, F(address, port, users))
         };
         //
         // ShadowSocks Server
@@ -405,8 +424,7 @@ namespace Qv2ray::base::objects
             bool ota;
             int level;
             int port;
-            ShadowSocksServerObject()
-                : email(""), address("0.0.0.0"), method("aes-256-cfb"), password(""), ota(false), level(0), port(0){};
+            ShadowSocksServerObject() : email(""), address("0.0.0.0"), method("aes-256-cfb"), password(""), ota(false), level(0), port(0){};
             JSONSTRUCT_REGISTER(ShadowSocksServerObject, F(email, address, port, method, password, ota, level))
         };
     } // namespace protocol

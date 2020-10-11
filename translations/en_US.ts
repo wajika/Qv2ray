@@ -285,10 +285,6 @@ This entry is ignored by V2Ray core when using DoH servers.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Deleting a subscription</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>All connections will be moved to default group, do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -298,6 +294,10 @@ This entry is ignored by V2Ray core when using DoH servers.</source>
     </message>
     <message>
         <source>The subscription link is invalid.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deleting a group</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -461,6 +461,10 @@ This entry is ignored by V2Ray core when using DoH servers.</source>
     </message>
     <message>
         <source>Cannot find any QRCode from the image.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>WARNING: You may have mistaken &apos;subscription link&apos; with &apos;share link&apos;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -764,10 +768,6 @@ This entry is ignored by V2Ray core when using DoH servers.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Groups / Subscriptions</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Click to toggle show/hide</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1041,6 +1041,14 @@ This entry is ignored by V2Ray core when using DoH servers.</source>
         <source>Do you want to update these subscriptions?</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Groups</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Collapse all groups</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>OutboundEditor</name>
@@ -1166,6 +1174,14 @@ This entry is ignored by V2Ray core when using DoH servers.</source>
     </message>
     <message>
         <source>Http</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>VLESS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Encryption</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1519,10 +1535,6 @@ Custom DNS Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Enable Proxy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Bypass CN Mainland</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1544,14 +1556,6 @@ Custom DNS Settings</source>
     </message>
     <message>
         <source>Only simple config is supported.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>HTTP</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Socks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1894,6 +1898,22 @@ If you insist to proceed, we&apos;re not providing with any support.</source>
         <source>This will make your TLS fingerpring different from common Golang programs.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Force Direct for All Connections</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This does not seem like an output from V2Ray Core.<byte value="xd"/>
+If you&apos;ve been looking for plugin cores, you should change this in plugin settings rather than here.<byte value="xd"/>
+Output: <byte value="xd"/>
+<byte value="xd"/>
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&apos;V2Ray Core&apos; Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -1902,27 +1922,11 @@ If you insist to proceed, we&apos;re not providing with any support.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>DNS lookup failed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Socket creation failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Failed to setup TTL value</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Setting timeout failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unresolvable hostname</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sending echo request failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2187,6 +2191,10 @@ If you insist to proceed, we&apos;re not providing with any support.</source>
     </message>
     <message>
         <source>PAC will still work currently, but please switch to the V2Ray built-in routing as soon as possible.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DNS not resolved</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

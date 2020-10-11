@@ -254,10 +254,6 @@ This entry is ignored by V2Ray core when using DoH servers.</source>
         <translation>項目管理</translation>
     </message>
     <message>
-        <source>Deleting a subscription</source>
-        <translation>サブスクリプションを削除する</translation>
-    </message>
-    <message>
         <source>All connections will be moved to default group, do you want to continue?</source>
         <translation>すべての項目がデフォルトグループに移動します。続行しますか？</translation>
     </message>
@@ -300,6 +296,10 @@ This entry is ignored by V2Ray core when using DoH servers.</source>
     <message>
         <source>The subscription link is invalid.</source>
         <translation>このサブスクリプションリンクが無効です。</translation>
+    </message>
+    <message>
+        <source>Deleting a group</source>
+        <translation>グループを削除</translation>
     </message>
 </context>
 <context>
@@ -463,6 +463,10 @@ This entry is ignored by V2Ray core when using DoH servers.</source>
     <message>
         <source>Failed to import connection</source>
         <translation>接続のインポート失敗</translation>
+    </message>
+    <message>
+        <source>WARNING: You may have mistaken &apos;subscription link&apos; with &apos;share link&apos;</source>
+        <translation>警告：「サブスクリプションリンク」を「共有リンク」と間違えている可能性があります</translation>
     </message>
 </context>
 <context>
@@ -1005,10 +1009,6 @@ This entry is ignored by V2Ray core when using DoH servers.</source>
         <translation>プラグイン</translation>
     </message>
     <message>
-        <source>Groups / Subscriptions</source>
-        <translation>グループ/サブスクリプション</translation>
-    </message>
-    <message>
         <source>New</source>
         <translation>作成</translation>
     </message>
@@ -1039,6 +1039,14 @@ This entry is ignored by V2Ray core when using DoH servers.</source>
     <message>
         <source>Do you want to update these subscriptions?</source>
         <translation>これらのサブスクリプションを更新しますか？</translation>
+    </message>
+    <message>
+        <source>Groups</source>
+        <translation>グループ</translation>
+    </message>
+    <message>
+        <source>Collapse all groups</source>
+        <translation>グループを折り畳む</translation>
     </message>
 </context>
 <context>
@@ -1167,6 +1175,14 @@ This entry is ignored by V2Ray core when using DoH servers.</source>
         <source>Http</source>
         <translation>HTTP</translation>
     </message>
+    <message>
+        <source>VLESS</source>
+        <translation>VLESS</translation>
+    </message>
+    <message>
+        <source>Encryption</source>
+        <translation>暗号化方法</translation>
+    </message>
 </context>
 <context>
     <name>PluginManageWindow</name>
@@ -1266,10 +1282,6 @@ This entry is ignored by V2Ray core when using DoH servers.</source>
         <translation>リスニングアドレス</translation>
     </message>
     <message>
-        <source>HTTP</source>
-        <translation>HTTP</translation>
-    </message>
-    <message>
         <source>Set System Proxy</source>
         <translation>システムプロキシに設定する</translation>
     </message>
@@ -1314,10 +1326,6 @@ This entry is ignored by V2Ray core when using DoH servers.</source>
         <translation>一般接続設定</translation>
     </message>
     <message>
-        <source>Enable Proxy</source>
-        <translation>プロキシを有効にする</translation>
-    </message>
-    <message>
         <source>Use Local DNS</source>
         <translation>ローカルDNSを使用する</translation>
     </message>
@@ -1340,10 +1348,6 @@ This entry is ignored by V2Ray core when using DoH servers.</source>
     <message>
         <source>Type</source>
         <translation>タイプ</translation>
-    </message>
-    <message>
-        <source>Socks</source>
-        <translation>Socks</translation>
     </message>
     <message>
         <source>Host Address</source>
@@ -1909,6 +1913,26 @@ V2Rayコアのファイル名は通常&apos;v2ray&apos;または&apos;v2ray.exe&
         <source>This will make your TLS fingerpring different from common Golang programs.</source>
         <translation>これにより、TLSのフィンガースプリングが一般的なGolangプログラムとは異なるものになります。</translation>
     </message>
+    <message>
+        <source>Force Direct for All Connections</source>
+        <translation>すべての接続に直接を</translation>
+    </message>
+    <message>
+        <source>This does not seem like an output from V2Ray Core.<byte value="xd"/>
+If you&apos;ve been looking for plugin cores, you should change this in plugin settings rather than here.<byte value="xd"/>
+Output: <byte value="xd"/>
+<byte value="xd"/>
+</source>
+        <translation>これはV2Rayコアからの出力のようには見えません。
+プラグインコアを探している場合は、ここではなくプラグイン設定でこれを変更する必要があります。
+出力：
+
+</translation>
+    </message>
+    <message>
+        <source>&apos;V2Ray Core&apos; Settings</source>
+        <translation>「V2Rayコア」設定</translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -2157,28 +2181,12 @@ V2Rayコアのファイル名は通常&apos;v2ray&apos;または&apos;v2ray.exe&
         <translation>タイムアウト</translation>
     </message>
     <message>
-        <source>DNS lookup failed.</source>
-        <translation>DNS検索に失敗しました。</translation>
-    </message>
-    <message>
         <source>Socket creation failed</source>
         <translation>ソケット作成に失敗しました</translation>
     </message>
     <message>
         <source>Failed to setup TTL value</source>
         <translation>TTL値の設定に失敗しました</translation>
-    </message>
-    <message>
-        <source>Setting timeout failed</source>
-        <translation>タイムアウトの設定に失敗しました</translation>
-    </message>
-    <message>
-        <source>Unresolvable hostname</source>
-        <translation>ホスト名が解決不能</translation>
-    </message>
-    <message>
-        <source>Sending echo request failed</source>
-        <translation>エコー要求の送信に失敗しました</translation>
     </message>
     <message>
         <source>Destination unreachable</source>
@@ -2203,6 +2211,10 @@ V2Rayコアのファイル名は通常&apos;v2ray&apos;または&apos;v2ray.exe&
     <message>
         <source>PAC will still work currently, but please switch to the V2Ray built-in routing as soon as possible.</source>
         <translation>PACは現在も機能しますが、できるだけ早くV2Rayの組み込みルーティングに切り替えてください。</translation>
+    </message>
+    <message>
+        <source>DNS not resolved</source>
+        <translation>DNSが解決されません</translation>
     </message>
 </context>
 <context>

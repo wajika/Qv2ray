@@ -1,19 +1,23 @@
 #pragma once
 #include <QtGlobal>
 #ifdef Q_OS_UNIX
-    #include <QPair>
+
+    #include "../DNSBase.hpp"
+    #include "uvw.hpp"
+
     #include <QString>
 namespace Qv2ray::components::latency::icmping
 {
-    class ICMPPing
+    class ICMPPing : public DNSBase<ICMPPing>
     {
       public:
-        explicit ICMPPing(int ttl);
-        ~ICMPPing()
-        {
-            deinit();
-        }
-        QPair<int64_t, QString> ping(const QString &address);
+        using DNSBase<ICMPPing>::DNSBase;
+        ~ICMPPing() override;
+        void start(int ttl = 30);
+
+      private:
+        void ping() override;
+        bool notifyTestHost();
 
       private:
         void deinit();
@@ -21,8 +25,9 @@ namespace Qv2ray::components::latency::icmping
         unsigned short seq = 1;
         // socket
         int socketId = -1;
-        bool initialized = false;
-        QString initErrorMessage;
+        std::shared_ptr<uvw::TimerHandle> timeoutTimer;
+        std::shared_ptr<uvw::PollHandle> pollHandle;
+        std::vector<timeval> startTimevals;
     };
 } // namespace Qv2ray::components::latency::icmping
 #endif

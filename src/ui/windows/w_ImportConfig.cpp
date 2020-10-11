@@ -24,10 +24,14 @@ ImportConfigWindow::ImportConfigWindow(QWidget *parent) : QvDialog(parent)
     QvMessageBusConnect(ImportConfigWindow);
     RESTORE_RUNTIME_CONFIG(screenShotHideQv2ray, hideQv2rayCB->setChecked)
     //
+    auto defaultItemIndex = 0;
     for (const auto &gid : ConnectionManager->AllGroups())
     {
         groupCombo->addItem(GetDisplayName(gid), gid.toString());
+        if (gid == DefaultGroupId)
+            defaultItemIndex = groupCombo->count() - 1;
     }
+    groupCombo->setCurrentIndex(defaultItemIndex);
 }
 
 void ImportConfigWindow::updateColorScheme()
@@ -50,7 +54,7 @@ ImportConfigWindow::~ImportConfigWindow()
 {
 }
 
-QMultiHash<QString, CONFIGROOT> ImportConfigWindow::SelectConnection(bool outboundsOnly)
+QMultiMap<QString, CONFIGROOT> ImportConfigWindow::SelectConnection(bool outboundsOnly)
 {
     // partial import means only import as an outbound, will set outboundsOnly to
     // false and disable the checkbox
@@ -58,7 +62,7 @@ QMultiHash<QString, CONFIGROOT> ImportConfigWindow::SelectConnection(bool outbou
     routeEditBtn->setEnabled(!outboundsOnly);
     groupCombo->setEnabled(false);
     this->exec();
-    QMultiHash<QString, CONFIGROOT> conn;
+    QMultiMap<QString, CONFIGROOT> conn;
     for (const auto &connEntry : connectionsToNewGroup.values())
     {
         conn += connEntry;
@@ -67,7 +71,7 @@ QMultiHash<QString, CONFIGROOT> ImportConfigWindow::SelectConnection(bool outbou
     {
         conn += connEntry;
     }
-    return result() == Accepted ? conn : QMultiHash<QString, CONFIGROOT>{};
+    return result() == Accepted ? conn : QMultiMap<QString, CONFIGROOT>{};
 }
 
 int ImportConfigWindow::PerformImportConnection()
@@ -168,13 +172,18 @@ void ImportConfigWindow::on_beginImportBtn_clicked()
             while (!linkList.isEmpty())
             {
                 aliasPrefix = nameTxt->text();
-                auto link = linkList.takeFirst();
-                if (link.trimmed().isEmpty() || link.startsWith("#") || link.startsWith("//"))
-                {
+                const auto link = linkList.takeFirst().trimmed();
+                if (link.isEmpty() || link.startsWith("#") || link.startsWith("//"))
                     continue;
+
+                // warn if someone tries to import a https:// link
+                if (link.startsWith("https://"))
+                {
+                    errorsList->addItem(tr("WARNING: You may have mistaken 'subscription link' with 'share link'"));
                 }
+
                 QString errMessage;
-                QString newGroupName = "";
+                QString newGroupName;
                 const auto config = ConvertConfigFromString(link, &aliasPrefix, &errMessage, &newGroupName);
 
                 // If the config is empty or we have any err messages.
@@ -257,7 +266,7 @@ void ImportConfigWindow::on_beginImportBtn_clicked()
 }
 void ImportConfigWindow::on_selectImageBtn_clicked()
 {
-    QString dir = QFileDialog::getOpenFileName(this, tr("Select an image to import"));
+    const auto dir = QFileDialog::getOpenFileName(this, tr("Select an image to import"));
     imageFileEdit->setText(dir);
     //
     QFile file(dir);
@@ -267,17 +276,14 @@ void ImportConfigWindow::on_selectImageBtn_clicked()
     auto buf = file.readAll();
     file.close();
     //
-    auto str = DecodeQRCode(QImage::fromData(buf));
+    const auto str = DecodeQRCode(QImage::fromData(buf));
 
     if (str.isEmpty())
     {
         QvMessageBoxWarn(this, tr("QRCode scanning failed"), tr("Cannot find any QRCode from the image."));
         return;
     }
-    else
-    {
-        qrCodeLinkTxt->setText(str.trimmed());
-    }
+    qrCodeLinkTxt->setText(str.trimmed());
 }
 void ImportConfigWindow::on_errorsList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)
 {
@@ -328,24 +334,6 @@ void ImportConfigWindow::on_connectionEditBtn_clicked()
 void ImportConfigWindow::on_cancelImportBtn_clicked()
 {
     reject();
-}
-
-void ImportConfigWindow::on_subscriptionButton_clicked()
-{
-    hide();
-    GroupManager w(this);
-    w.exec();
-    auto importToComplex = !keepImportedInboundCheckBox->isEnabled();
-    connectionsToNewGroup.clear();
-    connectionsToExistingGroup.clear();
-
-    if (importToComplex)
-    {
-        auto [alias, conf] = w.GetSelectedConfig();
-        connectionsToExistingGroup[GroupId{ groupCombo->currentData().toString() }].insert(alias, conf);
-    }
-
-    accept();
 }
 
 void ImportConfigWindow::on_routeEditBtn_clicked()

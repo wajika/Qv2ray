@@ -170,7 +170,7 @@ namespace Qv2ray::components::plugins
         return true;
     }
 
-    QvPluginHost::~QvPluginHost()
+    void QvPluginHost::SavePluginSettings() const
     {
         for (const auto &name : plugins.keys())
         {
@@ -181,6 +181,11 @@ namespace Qv2ray::components::plugins
                 StringToFile(JsonToString(conf), QV2RAY_PLUGIN_SETTINGS_DIR + name + ".conf");
             }
         }
+    }
+
+    QvPluginHost::~QvPluginHost()
+    {
+        SavePluginSettings();
         ClearPlugins();
     }
 
@@ -246,11 +251,11 @@ namespace Qv2ray::components::plugins
                                                                                                  QString *aliasPrefix,     //
                                                                                                  QString *errMessage,      //
                                                                                                  QString *newGroupName,    //
-                                                                                                 bool *status) const
+                                                                                                 bool *ok) const
     {
         Q_UNUSED(newGroupName)
         QList<std::tuple<QString, QString, QJsonObject>> data;
-        *status = true;
+        *ok = false;
         for (const auto &plugin : plugins)
         {
             if (plugin.isLoaded && plugin.metadata.SpecialPluginType.contains(SPECIAL_TYPE_SERIALIZOR))
@@ -264,8 +269,12 @@ namespace Qv2ray::components::plugins
                 if (thisPluginCanHandle)
                 {
                     const auto &[protocol, outboundSettings] = serializer->DeserializeOutbound(sharelink, aliasPrefix, errMessage);
-                    *status = *status && errMessage->isEmpty();
-                    data << std::tuple{ *aliasPrefix, protocol, outboundSettings };
+                    if (errMessage->isEmpty())
+                    {
+                        data << std::tuple{ *aliasPrefix, protocol, outboundSettings };
+                        *ok = true;
+                    }
+                    break;
                 }
             }
         }
